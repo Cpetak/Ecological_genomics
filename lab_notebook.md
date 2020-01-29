@@ -163,6 +163,7 @@
 # Intro to connecting to unix servers and navigating the bash command-line
 
 Prectice basic commands and setting up folders.
+https://pespenilab.github.io/Ecological-Genomics/Tutorial/2020-01-22_Command_Line_Unix.html
 
 ------    
 <div id='id-section9'/>   
@@ -220,11 +221,11 @@ Second line: sequence (around 150pb) , N=any base
 
 Forth line: quality of each nucleotide, asqi code, confidence score that it was read correctly, more on this on website
 
-### Vim
-write bash script for quality check in vim:
-hit i for insert mode -> file on server in my account
-hit escape  - no longer in edit mode
-shift column - command, wq = write and quite, followed by the name of the file
+### Vim to edit script for fastqc operation:
+write bash script for quality check in vim:\
+hit i for insert mode -> file on server in my account\
+hit escape  - no longer in edit mode\
+shift column - command, wq = write and quite, followed by the name of the file\
 
 not executable yet, need permission -> chmod
 
@@ -234,11 +235,11 @@ look at htmls!
 
 PCR duplicates - just result of amplification, shouldn't interpret it as the actual DNA sample!
 
-Trimming reads:
-now we'll actually make changes to the data files
-output to whole class
-script written for using Trimmomatic - uses both reads at the same time
-script in my folder
+### Trimming reads:
+now we'll actually make changes to the data files\
+output to whole class\
+script written for using Trimmomatic - uses both reads at the same time\
+script in my folder\
 
 
 ------    
