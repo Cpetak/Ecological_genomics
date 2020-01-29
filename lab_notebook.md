@@ -160,7 +160,9 @@
 
 ### Entry 8: 2020-01-22, Wednesday.   
 
+# Intro to connecting to unix servers and navigating the bash command-line
 
+Prectice basic commands and setting up folders.
 
 ------    
 <div id='id-section9'/>   
@@ -208,27 +210,27 @@ R1, R2 - 1 forward, 1 reverse read for each fragment (see handwritten notes)
 
 zcat AB_05_R1_fastq.gz | head -n 4, need this because it is gz zipped ->
 
-## Parts of the fastq file:
-first line: starts with @, which machine sequenced it, when, which spot on slide, other metadata, barcodes at the end of the line
+### Parts of the fastq file:
 
-second line: sequence (around 150pb) , N=any base
+First line: starts with @, which machine sequenced it, when, which spot on slide, other metadata, barcodes at the end of the line
 
-+ (separator)
+Second line: sequence (around 150pb) , N=any base
 
-forth line: quality of each nucleotide, asqi code, confidence score that it was read correctly, more on this on website
+"+" =separator
 
-my population: xcv
+Forth line: quality of each nucleotide, asqi code, confidence score that it was read correctly, more on this on website
 
+### Vim
 write bash script for quality check in vim:
 hit i for insert mode -> file on server in my account
 hit escape  - no longer in edit mode
 shift column - command, wq = write and quite, followed by the name of the file
 
-not executable yet, need permission - chmod
+not executable yet, need permission -> chmod
 
 bash fastqc.sh -> stuff in myresults -> git add --all . -> git commit -m "message" -> git push
 
-look at htmls
+look at htmls!
 
 PCR duplicates - just result of amplification, shouldn't interpret it as the actual DNA sample!
 
