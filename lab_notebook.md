@@ -239,7 +239,7 @@ PCR duplicates - just result of amplification, shouldn't interpret it as the act
 now we'll actually make changes to the data files\
 output to whole class\
 script written for using Trimmomatic - uses both reads at the same time\
-script in my folder\
+script in my folder
 
 
 ------    
