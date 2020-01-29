@@ -203,6 +203,42 @@
 
 ### Entry 13: 2020-01-29, Wednesday.   
 
+Population Genomics Day 1
+Insert pipline from https://pespenilab.github.io/Ecological-Genomics/2020-01-29_PopGenomics_Day1.html
+
+cd /data/project_data/RS_ExomeSeq/fastq/edge_fastq/
+R1, R2 - 1 forward, 1 reverse read for each fragment (see handwritten notes)
+
+zcat AB_05_R1_fastq.gz | head -n 4, need this because it is gz zipped ->
+
+first line: starts with @, which machine sequenced it, when, which spot on slide, other metadata, barcodes at the end of the line
+
+second line: sequence (around 150pb) , N=any base
+
++ (separator)
+
+forth line: quality of each nucleotide, asqi code, confidence score that it was read correctly, more on this on website
+
+my population: xcv
+
+write bash script for quality check in vim:
+hit i for insert mode -> file on server in my account
+hit escape  - no longer in edit mode
+shift column - command, wq = write and quite, followed by the name of the file
+
+not executable yet, need permission - chmod
+
+bash fastqc.sh -> stuff in myresults -> git add --all . -> git commit -m "message" -> git push
+
+look at htmls
+
+PCR duplicates - just result of amplification, shouldn't interpret it as the actual DNA sample!
+
+Trimming reads:
+now we'll actually make changes to the data files
+output to whole class
+script written for using Trimmomatic - uses both reads at the same time
+script in my folder
 
 
 ------    
