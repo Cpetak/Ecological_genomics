@@ -1,9 +1,6 @@
-# Title  
+# My Lab Nootbook for Ecological Genomics  
 
-## Author: Lauren Ashlock  
-### Affiliation:  
-### E-mail contact: 
-
+## Author: Csenge Petak    
 
 ### Start Date: 2020-01-13
 ### End Date: 2020-05-08
@@ -203,14 +200,15 @@
 
 ### Entry 13: 2020-01-29, Wednesday.   
 
-Population Genomics Day 1
-Insert pipline from https://pespenilab.github.io/Ecological-Genomics/2020-01-29_PopGenomics_Day1.html
+# Population Genomics Day 1
+Pipeline on: https://pespenilab.github.io/Ecological-Genomics/2020-01-29_PopGenomics_Day1.html
 
 cd /data/project_data/RS_ExomeSeq/fastq/edge_fastq/
 R1, R2 - 1 forward, 1 reverse read for each fragment (see handwritten notes)
 
 zcat AB_05_R1_fastq.gz | head -n 4, need this because it is gz zipped ->
 
+## Parts of the fastq file:
 first line: starts with @, which machine sequenced it, when, which spot on slide, other metadata, barcodes at the end of the line
 
 second line: sequence (around 150pb) , N=any base
