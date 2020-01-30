@@ -1,9 +1,6 @@
-# Title  
+# My Lab Nootbook for Ecological Genomics  
 
-## Author: Lauren Ashlock  
-### Affiliation:  
-### E-mail contact: 
-
+## Author: Csenge Petak    
 
 ### Start Date: 2020-01-13
 ### End Date: 2020-05-08
@@ -163,7 +160,10 @@
 
 ### Entry 8: 2020-01-22, Wednesday.   
 
+# Intro to connecting to unix servers and navigating the bash command-line
 
+Prectice basic commands and setting up folders.
+https://pespenilab.github.io/Ecological-Genomics/Tutorial/2020-01-22_Command_Line_Unix.html
 
 ------    
 <div id='id-section9'/>   
@@ -203,6 +203,43 @@
 
 ### Entry 13: 2020-01-29, Wednesday.   
 
+# Population Genomics Day 1
+Pipeline on: https://pespenilab.github.io/Ecological-Genomics/2020-01-29_PopGenomics_Day1.html
+
+cd /data/project_data/RS_ExomeSeq/fastq/edge_fastq/
+R1, R2 - 1 forward, 1 reverse read for each fragment (see handwritten notes)
+
+zcat AB_05_R1_fastq.gz | head -n 4, need this because it is gz zipped ->
+
+### Parts of the fastq file:
+
+First line: starts with @, which machine sequenced it, when, which spot on slide, other metadata, barcodes at the end of the line
+
+Second line: sequence (around 150pb) , N=any base
+
+"+" =separator
+
+Forth line: quality of each nucleotide, asqi code, confidence score that it was read correctly, more on this on website
+
+### Vim to edit script for fastqc operation:
+write bash script for quality check in vim:\
+hit i for insert mode -> file on server in my account\
+hit escape  - no longer in edit mode\
+shift column - command, wq = write and quite, followed by the name of the file\
+
+not executable yet, need permission -> chmod
+
+bash fastqc.sh -> stuff in myresults -> git add --all . -> git commit -m "message" -> git push
+
+look at htmls!
+
+PCR duplicates - just result of amplification, shouldn't interpret it as the actual DNA sample!
+
+### Trimming reads:
+now we'll actually make changes to the data files\
+output to whole class\
+script written for using Trimmomatic - uses both reads at the same time\
+script in my folder
 
 
 ------    
