@@ -292,9 +292,19 @@ Next up: **Mapping to reference** with BWA -> sam (can be looked at) -> bam (bin
 There isn't a reference genome for this species so we are using a close relative: 20 Gb! too big -> reduced sequence based on our probes
 
 there are only contigs, we don't know their relative location on chromosomes... like for most non-model organisms
-**N50** - show state of the assembly, sort contigs based on size -> all together 668 Mb, take 50%, start with biggest contigs and how far can you keep going until the sum is 668/2 -> N50 number tells you that, if high = lot of little contigs
+**N50** - show state of the assembly, sort contigs based on size -> all together 668 Mb, take 50% -> length of contig at the 50% point = N50
 
+call variable: ${myrepo}
 
+When aligning you let some mismatches/indels
+
+BWA = for this data a bunch of alignment algorithms were tried and this one had the best trande off between speed and accuracy
+BWA-MEM = best for short sequences
+
+-M -> allow reads to map on different contigs - those contigs could be close by on the chromosome
+
+markdup -> removes PCR duplicates, so excess matches that map exactly the same genomic region
+indexing is for quick look up and retreaval
 
 
 ------    
