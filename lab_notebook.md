@@ -280,6 +280,21 @@ script in my folder
 
 ### Entry 18: 2020-02-05, Wednesday.   
 
+# Population Genomics Day 2
+Pipeline on: https://pespenilab.github.io/Ecological-Genomics/2020-02-05_PopGenomics_Day2.html
+
+Last time we trimmed data -> now higher quality
+
+Next up: **Mapping to reference** with BWA -> sam (can be looked at) -> bam (binary but better for storage)
+-> remove PCR duplicates -> indexing -> mapping statistics
+1st individual scripts to test -> then put it in a wrapper that calls all of them
+
+There isn't a reference genome for this species so we are using a close relative: 20 Gb! too big -> reduced sequence based on our probes
+
+there are only contigs, we don't know their relative location on chromosomes... like for most non-model organisms
+**N50** - show state of the assembly, sort contigs based on size -> all together 668 Mb, take 50%, start with biggest contigs and how far can you keep going until the sum is 668/2 -> N50 number tells you that, if high = lot of little contigs
+
+
 
 
 ------    
