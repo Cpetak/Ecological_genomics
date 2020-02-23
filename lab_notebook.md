@@ -343,8 +343,38 @@ indexing is for quick look up and retreaval
 <div id='id-section23'/>   
 
 
-### Entry 23: 2020-02-12, Wednesday.   
+### Entry 23: 2020-02-12, Wednesday.  
+# Population Genomics Day 3
+Up to but not including "3a. Estimate the SFS for your pop"
+https://pespenilab.github.io/Ecological-Genomics/2020-02-12_PopGenomics_Day3.html
 
+**Mapping statistics**
+Output of BWA -> SAM file, includes: 
+read, 
+information about mapping success (orientation, left or right read), 
+reference sequence name, 
+mapping quality (Phred-scaled), 
+CIGAR - alignment information Match (M), Insertion (I) or Deletion (D)),
+
+-> BAM is in binary code, but same info
+
+Summary of how well our reads mapped to the reference: 
+samtools, 
+-flagstat: basic info, 
+-depth: depth of coverage, or how many reads cover each mapped position, on average
+
+tview => look at a sam file, visualise (samtools tview filename)
+
+**Discovering SNPs**
+SNP calling step -> SNP 1 | Ind1 CC | Ind2 CT
+but is ind1 really homozygote or there is just not enough coverage? -> using genotype likelihoods
+
+Method: Analysis of Next Generation Sequence Data (ANGSD) 
+use genotype likelihood to:
+a. estimate the site frequency spectrum (SFS) (???)
+b. estimate nucleotide diversities
+c. estimate Fst between all populations, or pairwise between sets of populations
+d. perform a genetic PCA based on estimation of the genetic covariance matrix (this is done on the entire set of Edge ind’s)
 
 
 ------    
