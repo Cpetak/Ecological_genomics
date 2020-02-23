@@ -344,8 +344,8 @@ indexing is for quick look up and retreaval
 
 
 ### Entry 23: 2020-02-12, Wednesday.  
-# Population Genomics Day 3
-Up to but not including "3a. Estimate the SFS for your pop"
+# Population Genomics Day 3 \
+Up to but not including "3a. Estimate the SFS for your pop" \
 https://pespenilab.github.io/Ecological-Genomics/2020-02-12_PopGenomics_Day3.html
 
 **Mapping statistics**
@@ -371,7 +371,7 @@ but is ind1 really homozygote or there is just not enough coverage? -> using gen
 
 Method: Analysis of Next Generation Sequence Data (ANGSD) 
 use genotype likelihood to:
-a. estimate the site frequency spectrum (SFS) (???)
+a. estimate the site frequency spectrum (SFS)
 b. estimate nucleotide diversities
 c. estimate Fst between all populations, or pairwise between sets of populations
 d. perform a genetic PCA based on estimation of the genetic covariance matrix (this is done on the entire set of Edge ind’s)
@@ -414,7 +414,31 @@ d. perform a genetic PCA based on estimation of the genetic covariance matrix (t
 
 
 ### Entry 28: 2020-02-19, Wednesday.   
+# Population Genomics Day 4 \
+https://pespenilab.github.io/Ecological-Genomics/2020-02-12_PopGenomics_Day4%20(1).html
 
+**Site frequency spectrum (SFS)**
+x-axis: # of individuals with derived allele (instead of anchestral), 
+y-axis: # of sites
+In real populations usually - lot of sites where every individual has the anchestral allele (so on x-axis 0 has high # of loci) and very few or no sites where every individuals has the derived allele (so on x-axis 2N (pop sizex2 because diploid) has low # of loci)
+Example: y-axis: 200, 150, 100, 50, x-axis: 0,1,2,3 means that there are 200 sites where all individuals have the anchestral allele and there are 100 sites where 2 individuals have the derived allele.
+
+Are we confident in the ancestral state of each variable site (SNP) in our dataset? ->
+**Unfolded vs. folded SFS**
+
+if we know the anestral state -> then the best info is contained in the unfolded spectrum
+if we don't know -> make the SFS based on the minor allele (the less frequent allele; always < 0.5 in the population)
+
+Folded spectra wraps the SFS around such that high frequency “derived” alleles are put in the small bins (low minor allele freq)
+
+image in the tutorial: for loci where derived allele frequency more than 3 = more than 50% - they are regarded as the anchestral alleles in the folded SFS so at these loci the derived allele frequency changes from 4 to 2 (and 5 to 1 and 6 to 0) so they are going to be categorised as such -> 0,1,2 columns get taller
+
+->> assuming the reference allele is also the ancestral allele can lead to biases in inference, and therefore the conservative thing to do is to “fold” the SFS and base it on the minor allele frequencies instead of the derived allele frequencies 
+-> ‘fold 1’ flag when running the ANGSD program -> estimate the folded SFS for your pop with realSFS command
+
+**Computing nucleotide diversities and Tajima’s D from SFS**
+ANGSD again, this time we include the -pest and the doThetas flag
+-> ${mypop}.thetas.idx.pestPG -> into R
 
 
 ------    
