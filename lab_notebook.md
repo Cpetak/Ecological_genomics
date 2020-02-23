@@ -440,6 +440,7 @@ image in the tutorial: for loci where derived allele frequency more than 3 = mor
 ANGSD again, this time we include the -pest and the doThetas flag
 -> ${mypop}.thetas.idx.pestPG -> into R
 
+Per-site values of Watterson’s theta (tW) and theta-Pi (tP): divide each statistic by the total number of sites
 
 ------    
 <div id='id-section29'/>   
