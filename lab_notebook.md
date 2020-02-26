@@ -163,8 +163,8 @@
 # Intro to connecting to unix servers and navigating the bash command-line \
 https://pespenilab.github.io/Ecological-Genomics/Tutorial/2020-01-22_Command_Line_Unix.html
 
-Practice basic commands and setting up folders.
-Import metadata from /data/project_data/RS_ExomeSeq
+Practice basic commands and setting up folders. \
+Import metadata from /data/project_data/RS_ExomeSeq.
 
 ------    
 <div id='id-section9'/>   
@@ -204,7 +204,7 @@ Import metadata from /data/project_data/RS_ExomeSeq
 
 ### Entry 13: 2020-01-29, Wednesday.   
 
-# Population Genomics Day 1
+# Population Genomics Day 1 \
 Pipeline on: https://pespenilab.github.io/Ecological-Genomics/2020-01-29_PopGenomics_Day1.html
 
 cd /data/project_data/RS_ExomeSeq/fastq/edge_fastq/
@@ -291,6 +291,14 @@ do
 done 
 ``````
 
+Meaning of settings above:
+
++Cut adapter and other illumina-specific sequences from the read
++Cut bases off the start of a read, if below a threshold quality = 20
++Cut bases off the end of a read, if below a threshold quality = 20
++Scan the read with a 4-base wide sliding window, cutting when the average quality per base drops below 15 (SLIDINGWINDOW:4:15) = here 6:20
++Drop the read if it is below a specified length = 35
+
 ------    
 <div id='id-section14'/>   
 
@@ -329,7 +337,7 @@ done
 
 ### Entry 18: 2020-02-05, Wednesday.   
 
-# Population Genomics Day 2
+# Population Genomics Day 2 \
 Pipeline on: https://pespenilab.github.io/Ecological-Genomics/2020-02-05_PopGenomics_Day2.html
 
 Last time we trimmed data -> now higher quality
