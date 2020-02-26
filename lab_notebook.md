@@ -293,11 +293,11 @@ done
 
 Meaning of settings above:
 
-+Cut adapter and other illumina-specific sequences from the read
-+Cut bases off the start of a read, if below a threshold quality = 20
-+Cut bases off the end of a read, if below a threshold quality = 20
-+Scan the read with a 4-base wide sliding window, cutting when the average quality per base drops below 15 (SLIDINGWINDOW:4:15) = here 6:20
-+Drop the read if it is below a specified length = 35
++ Cut adapter and other illumina-specific sequences from the read
++ Cut bases off the start of a read, if below a threshold quality = 20
++ Cut bases off the end of a read, if below a threshold quality = 20
++ Scan the read with a 4-base wide sliding window, cutting when the average quality per base drops below 15 (SLIDINGWINDOW:4:15) = here 6:20
++ Drop the read if it is below a specified length = 35
 
 ------    
 <div id='id-section14'/>   
