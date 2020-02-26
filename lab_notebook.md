@@ -160,10 +160,11 @@
 
 ### Entry 8: 2020-01-22, Wednesday.   
 
-# Intro to connecting to unix servers and navigating the bash command-line
-
-Prectice basic commands and setting up folders.
+# Intro to connecting to unix servers and navigating the bash command-line \
 https://pespenilab.github.io/Ecological-Genomics/Tutorial/2020-01-22_Command_Line_Unix.html
+
+Practice basic commands and setting up folders.
+Import metadata from /data/project_data/RS_ExomeSeq
 
 ------    
 <div id='id-section9'/>   
@@ -231,16 +232,64 @@ not executable yet, need permission -> chmod
 
 bash fastqc.sh -> stuff in myresults -> git add --all . -> git commit -m "message" -> git push
 
-look at htmls!
+look at htmls of fastqc
 
 PCR duplicates - just result of amplification, shouldn't interpret it as the actual DNA sample!
 
+### My script to do fastqc:
+``````
+#!/bin/bash
+
+cd ~/Ecological_genomics/myresults/
+
+mkdir fastqc
+
+for file in /data/project_data/RS_ExomeSeq/fastq/edge_fastq/XCV*fastq.gz
+
+do
+
+# fastqc is a program we are calling that is already available, followed by input and output location
+fastqc ${file} -o fastqc/ # because I'm going to be in myresults already
+
+done
+``````
+
 ### Trimming reads:
-now we'll actually make changes to the data files\
+now we'll actually make changes to the data files, not just check quality\
 output to whole class\
 script written for using Trimmomatic - uses both reads at the same time\
-script in my folder
 
+### My script for trimming reads:
+``````
+#!/bin/bash   
+ 
+cd /data/project_data/RS_ExomeSeq/fastq/edge_fastq  
+ 
+for R1 in XCV*R1_fastq.gz  
+
+do 
+ 
+	R2=${R1/_R1_fastq.gz/_R2_fastq.gz}
+	f=${R1/_R1_fastq.gz/}
+	name=`basename ${f}`
+
+	java -classpath /data/popgen/Trimmomatic-0.33/trimmomatic-0.33.jar org.usadellab.trimmomatic.TrimmomaticPE \
+        -threads 1 \
+        -phred33 \
+         "$R1" \
+         "$R2" \
+         /data/project_data/RS_ExomeSeq/fastq/edge_fastq/pairedcleanreads/${name}_R1.cl.pd.fq \
+         /data/project_data/RS_ExomeSeq/fastq/edge_fastq/unpairedcleanreads/${name}_R1.cl.un.fq \
+         /data/project_data/RS_ExomeSeq/fastq/edge_fastq/pairedcleanreads/${name}_R2.cl.pd.fq \
+         /data/project_data/RS_ExomeSeq/fastq/edge_fastq/unpairedcleanreads/${name}_R2.cl.un.fq \
+        ILLUMINACLIP:/data/popgen/Trimmomatic-0.33/adapters/TruSeq3-PE.fa:2:30:10 \
+        LEADING:20 \
+        TRAILING:20 \
+        SLIDINGWINDOW:6:20 \
+        MINLEN:35 
+ 
+done 
+``````
 
 ------    
 <div id='id-section14'/>   
