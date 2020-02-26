@@ -479,8 +479,38 @@ Per-site values of Watterson’s theta (tW) and theta-Pi (tP): divide each stati
 
 
 ### Entry 33: 2020-02-26, Wednesday.   
+# Transcriptomics Day 1 \
+https://pespenilab.github.io/Ecological-Genomics/2020-02-26_RNA-seq_Day1.html
+
+Red scrouce 3' RNA seq = 1 read!
+Factors:        Level:
+Treament        - control, hot, hot and dry
+Source climate  - hotdry and coldwet
+Time            - 0,5,10
 
 
+Possible questions to answer with this data:
+Do individuals coming from different climate sources have different gene expression in each condition? 
+exp ~ Source climate + treatment + (Source climate * treatment)
+in different time points?
+exp ~ time + Source climate + (time * Source climate) + family
+What GO terms are enriched?
+What genes are important?
+Connecting SNPs to expression differences! ask this from melissa, look it up!
+
+useful site: Congenie.org
+
+**Data Processing Pipeline:**
+
+1. FastQC on raw reads –> Trimmomatic (done!) –> FastQC on cleaned reads
+2. We have reference transcriptome from closely related species:
+66,632 unigenes, consisting of 26,437 high-confidence gene models, 32,150 medium-confidence gene models, and 8,045 low-confidence gene models
+3. Use Salmon to simulateously map reads and quantify abundance.
+4. Import the data into DESeq2 in R for data normalization, visualization, and statistical tests for differential gene expression.
+
+My data: ASC C and D
+
+Fastqc before and after trimming.
 
 ------    
 <div id='id-section34'/>   
