@@ -363,6 +363,78 @@ BWA-MEM = best for short sequences
 markdup -> removes PCR duplicates, so excess matches that map exactly the same genomic region
 indexing is for quick look up and retreaval
 
+### My script for "shell"
+``````
+#!/bin/bash
+
+#Path to my repo:
+myrepo="/users/c/p/cpetak/Ecological_genomics"
+
+#My population:
+mypop="XCV"
+
+#Directory to our cleaned and paired reads:
+input="/data/project_data/RS_ExomeSeq/fastq/edge_fastq/pairedcleanreads/${mypop}"
+
+#Directory to store the outputs of our mapping:
+output="/data/project_data/RS_ExomeSeq/mapping"
+
+#Run mapping.sh
+source ./mapping.sh
+
+#Run the post-processing steps
+source ./process_bam.sh
+``````
+### My script for BWA
+``````
+#!/bin/bash
+
+#Path to reference genomes
+ref="/data/project_data/RS_ExomeSeq/ReferenceGenomes/Pabies1.0-genome_reduced.fa"
+
+#Write a loop to map each individual within my population
+for forward in ${input}*_R1.cl.pd.fq
+
+do 
+	reverse=${forward/_R1.cl.pd.fq/_R2.cl.pd.fq}
+	f=${forward/_R1.cl.pd.fq/}
+	name=`basename ${f}`
+	bwa mem -t 1 -M ${ref} ${forward} ${reverse} > ${output}/BWA/${name}.sam
+done
+``````
+
+### My script for SAM to BAM (sambamba), remove PCR dup (markup), index 
+``````
+#!/bin/bash
+
+#This is where our output sam files are going to get converted into binary format (bam)
+#Then, we're going to sort the bam files, remove the PCR duplicates, index them
+
+#First, let's convert sam to bam
+for f in ${output}/BWA/${mypop}*.sam
+
+do
+	out=${f/.sam/}
+	sambamba-0.7.1-linux-static view -S --format=bam ${f} -o ${out}.bam
+	samtools sort ${out}.bam -o ${out}.sorted.bam
+done
+
+#Now let's remove the PCR duplicates
+for file in ${out}/BWA/${mypop}*.sorted.bam
+
+do
+	f=${file/.sorted.bam/}
+	sambamba-0.7.1-linux-static markdup -r -t 1 ${file} ${f}.sorted.rmdup.bam
+done
+
+#Now to finish we'll index our files
+
+for file in ${output}/BWA/${mypop}*.sorted.rmdup.bam
+
+do
+	samtools index ${file}
+done
+``````
 
 ------    
 <div id='id-section19'/>   
@@ -402,7 +474,6 @@ indexing is for quick look up and retreaval
 
 ### Entry 23: 2020-02-12, Wednesday.  
 # Population Genomics Day 3 \
-Up to but not including "3a. Estimate the SFS for your pop" \
 https://pespenilab.github.io/Ecological-Genomics/2020-02-12_PopGenomics_Day3.html
 
 **Mapping statistics**
@@ -421,6 +492,29 @@ samtools,
 -depth: depth of coverage, or how many reads cover each mapped position, on average
 
 tview => look at a sam file, visualise (samtools tview filename)
+
+### My script for mapping stats
+``````
+#!/bin/bash
+myrepo="/users/c/p/cpetak/Ecological_genomics"
+mypop="XCV"
+output="/data/project_data/RS_ExomeSeq/mapping"
+
+echo "Num.reads R1 R2 Paired MateMapped Singletons MateMappedDiffChr" > ${myrepo}/myresults/${mypop}.flagstats.txt
+
+for file in ${output}/BWA/${mypop}*sorted.rmdup.bam
+do
+f=${file/.sorted.rmdup.bam/}
+name=`basename ${f}`
+echo ${name} >> ${myrepo}/myresults/${mypop}.names.txt
+samtools flagstat ${file} | awk 'NR>=6&&NR<=13 {print $1}' | column -x >> ${myrepo}/myresults/${mypop}.flagstats.txt
+done
+
+for file in ${output}/BWA/${mypop}*sorted.rmdup.bam
+do
+samtools depth ${file} | awk '{sum+=$3} END {print sum/NR}' >> ${myrepo}/myresults/${mypop}.coverage.txt
+done
+``````
 
 **Discovering SNPs**
 SNP calling step -> SNP 1 | Ind1 CC | Ind2 CT
@@ -493,11 +587,70 @@ image in the tutorial: for loci where derived allele frequency more than 3 = mor
 ->> assuming the reference allele is also the ancestral allele can lead to biases in inference, and therefore the conservative thing to do is to “fold” the SFS and base it on the minor allele frequencies instead of the derived allele frequencies 
 -> ‘fold 1’ flag when running the ANGSD program -> estimate the folded SFS for your pop with realSFS command
 
+### My script for ANGSD
+``````
+#!/bin/bash
+
+cd /users/c/p/cpetak/Ecological_genomics/myresults/ANGSD
+
+mypop=XCV
+REF="/data/project_data/RS_ExomeSeq/ReferenceGenomes/Pabies1.0-genome_reduced.fa"
+
+ANGSD -b XCV_bam.list \
+-ref ${REF} -anc ${REF} \
+-out ${mypop}_outFold \
+-nThreads 1 \
+-remove_bads 1 \
+-C 50 \
+-baq 1 \
+-minMapQ 20 \
+-minQ 20 \
+-setMinDepth 3 \
+-minInd 2 \
+-setMinDepthInd 1 \
+-setMaxDepthInd 17 \
+-skipTriallelic 1 \
+-GL 1 \
+-doCounts 1 \
+-doMajorMinor 1 \
+-doMaf 1 \
+-doSaf 1 \
+-pest ${mypop}_outFold.sfs \
+-doThetas 1 \
+-fold 1
+
+thetaStat do_stat ${mypop}_outFold.thetas.idx
+``````
+
 **Computing nucleotide diversities and Tajima’s D from SFS**
 ANGSD again, this time we include the -pest and the doThetas flag
 -> ${mypop}.thetas.idx.pestPG -> into R
 
 Per-site values of Watterson’s theta (tW) and theta-Pi (tP): divide each statistic by the total number of sites
+
+### My R code
+``````
+SFS <- scan("XCV_outFold.sfs")
+sumSFS <- sum(SFS)
+pctPoly = 100*(1-(SFS[1]/sumSFS))
+plotSFS <- SFS[-c(1,length(SFS)+1)]
+barplot(plotSFS, xlab="XCV Pop SFS")
+div <- read.table("XCV_outFold.thetas.idx.pestPG")
+colnames(div)=c("window","chrome","wincenter","tW","tP","tF","tH","tL","tajD","fulif","fuliD","fayH","zengsE","numSites")
+div$tWpersite = div$tW/div$numSites
+div$tPpersite = div$tP/div$numSites
+pdf("XWS_diversity_stats2.pdf")
+par(mfrow=c(2,2))
+
+hist(div$tWpersite,col="darkorchid",xlab="Theta_W",main="")
+hist(div$tPpersite,col="darkorchid", xlab="Theta-Pi",main="")
+hist(tajDEst,col="darkorchid",xlab="Tajima's D",main="")
+
+summary(div)
+
+barplot(plotSFS, main="SFS", xlab= "Derived allele frequency", ylab="Number of sites")
+dev.off()
+``````
 
 ------    
 <div id='id-section29'/>   
