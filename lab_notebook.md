@@ -516,6 +516,15 @@ samtools depth ${file} | awk '{sum+=$3} END {print sum/NR}' >> ${myrepo}/myresul
 done
 ``````
 
+-> output of flagstat:
++ Num.reads is the total number of reads. Technically, this is the total number that bwa was able to map in any configuration and should correspond closely to the sum of cleaned paired reads for R1 and R2 for your individual post-Trimmomatic.
++ R1 and R2 are the total number of forward and reverse reads that mapped in any configuration.  These should sum to the 1st column.
++ Paired is the column perhaps of most interest.  It is the total number of reads (summed R1 and R2) that mapped “properly” — that is, where both reads are on the same chromosome, they are facing each other, and they are a distance apart that corresponds to their estimated insert length (insert lengths ~300-500 bp).
++ The “mate mapped”  is similar to the last category, but counts reads where both R1 and R2 mapped but not necessarily to same chromosome, orientation facing each other, or appropriate insert length. 
++ Singletons is how may reads mapped without the mate mapping somewhere
++ And mate mapped to a different chr means R1 and R2 both mapped, but are located on separate contigs.
++ For us, the most important info is in column 1 and 4 (Num. Reads and Paired).  The proportion of paired/num.reads tells us what proportion of our reads were mapped as expected.  Based on our exome capture results, you should expect something ~60-65%
+
 **Discovering SNPs**
 SNP calling step -> SNP 1 | Ind1 CC | Ind2 CT
 but is ind1 really homozygote or there is just not enough coverage? -> using genotype likelihoods
