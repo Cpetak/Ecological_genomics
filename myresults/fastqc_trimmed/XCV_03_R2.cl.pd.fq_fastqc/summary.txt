@@ -1,0 +1,12 @@
+PASS	Basic Statistics	XCV_03_R2.cl.pd.fq
+PASS	Per base sequence quality	XCV_03_R2.cl.pd.fq
+WARN	Per tile sequence quality	XCV_03_R2.cl.pd.fq
+PASS	Per sequence quality scores	XCV_03_R2.cl.pd.fq
+WARN	Per base sequence content	XCV_03_R2.cl.pd.fq
+PASS	Per sequence GC content	XCV_03_R2.cl.pd.fq
+PASS	Per base N content	XCV_03_R2.cl.pd.fq
+WARN	Sequence Length Distribution	XCV_03_R2.cl.pd.fq
+PASS	Sequence Duplication Levels	XCV_03_R2.cl.pd.fq
+PASS	Overrepresented sequences	XCV_03_R2.cl.pd.fq
+PASS	Adapter Content	XCV_03_R2.cl.pd.fq
+PASS	Kmer Content	XCV_03_R2.cl.pd.fq
