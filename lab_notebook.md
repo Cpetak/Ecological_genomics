@@ -788,7 +788,7 @@ for file in ASC_06_C*.cl.fq
 
 do
 
-salmon quant -i /data/project_data/RS_RNASeq/ReferenceTranscriptome/Pabies_HC27_index -l A -r ${file} --validateMappings -o ${output}/${file}
+salmon quant -i /data/project_data/RS_RNASeq/ReferenceTranscriptome/Pabies_cds_index -l A -r ${file} --validateMappings -o ${output}/${file}
 
 done
 
@@ -796,9 +796,52 @@ for file2 in ASC_06_D*.cl.fq
 
 do
 
-salmon quant -i /data/project_data/RS_RNASeq/ReferenceTranscriptome/Pabies_HC27_index -l A -r ${file2} --validateMappings -o ${output}/${file2}
+salmon quant -i /data/project_data/RS_RNASeq/ReferenceTranscriptome/Pabies_cds_index -l A -r ${file2} --validateMappings -o ${output}/${file2}
 
 done
+``````
+
+Check mapping rates:
+``````
+grep -r --include \*.log -e 'Mapping rate'
+``````
+Mine:
+28.5599%, 41.9786%, 32.8468%, 22.5165%, 36.1068%
+ASC_06_C_0, ASC_06_C_10, ASC_06_C_5, ASC_06_D_H_0, ASC_06_D_H_10
+Percent of reads that mapped to reference
+
+The output we want to look at: quant.sf within ASC_06_C_0_GAGTCC_R1.cl.fq
+Combining individual quant.sf files into one data matrix with all 76 samples.
+### R script
+``````
+library(tximportData)
+library(tximport)
+
+#locate the directory containing the files. 
+dir <- "/data/project_data/RS_RNASeq/salmon/"
+list.files(dir)
+
+# read in table with sample ids
+samples <- read.table("/data/project_data/RS_RNASeq/salmon/RS_samples.txt", header=TRUE)
+
+# now point to quant files
+all_files <- file.path(dir, samples$sample, "quant.sf")
+names(all_files) <- samples$sample
+
+# what would be used if linked transcripts to genes
+#txi <- tximport(files, type = "salmon", tx2gene = tx2gene)
+# to be able to run without tx2gene
+txi <- tximport(all_files, type = "salmon", txOut=TRUE)  
+names(txi)
+
+head(txi$counts)
+
+countsMatrix <- txi$counts
+dim(countsMatrix)
+#[1] 66069    76
+
+# To write out
+write.table(countsMatrix, file = "RS_countsMatrix.txt", col.names = T, row.names = T, quote = F) 
 ``````
 
 ------    
