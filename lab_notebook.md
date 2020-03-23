@@ -731,6 +731,63 @@ My data: ASC C and D
 
 Fastqc before and after trimming.
 
+### My script for FastQC
+``````
+#!/bin/bash
+
+cd ~/Ecological_genomics/myresults/
+
+mkdir fastqc_trans
+
+for file in /data/project_data/RS_RNASeq/fastq/ASC_06_C*.fastq.gz
+
+do
+
+# fastqc is a program we are calling that is already available, followed by input and output location
+fastqc ${file} -o fastqc/ # because I'm going to be in myresults already
+
+done
+
+for file2 in /data/project_data/RS_RNASeq/fastq/ASC_06_D*.fastq.gz
+
+do
+
+# fastqc is a program we are calling that is already available, followed by input and output location
+fastqc ${file2} -o fastqc/ # because I'm going to be in myresults already
+
+done
+``````
+
+### My script for trimming
+``````
+#!/bin/bash
+
+cd /data/project_data/RS_RNASeq/fastq/
+
+########## Trimmomatic for single end reads
+
+for R1 in *R1.fastq.gz  
+
+do 
+    echo "starting sample ${R1}"
+    f=${R1/_R1.fastq.gz/}
+    name=`basename ${f}`
+
+    java -classpath /data/popgen/Trimmomatic-0.33/trimmomatic-0.33.jar org.usadellab.trimmomatic.TrimmomaticSE \
+        -threads 1 \
+        -phred33 \
+         "$R1" \
+         /data/project_data/RS_RNASeq/fastq/cleanreads/${name}_R1.cl.fq \
+        ILLUMINACLIP:/data/popgen/Trimmomatic-0.33/adapters/TruSeq3-SE.fa:2:30:10 \
+        LEADING:20 \
+        TRAILING:20 \
+        SLIDINGWINDOW:6:20 \
+        HEADCROP:12 \
+        MINLEN:35 
+     echo "sample ${R1} done"
+done
+``````
+
 ------    
 <div id='id-section34'/>   
 
