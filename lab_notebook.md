@@ -1173,8 +1173,26 @@ dim(conds10)
 
 
 ### Entry 53: 2020-03-25, Wednesday.   
+# Epigenomics Day 1 \
+https://pespenilab.github.io/Ecological-Genomics/2020-03-25_Epigenetics_Day_1.html
 
+Ecological importance, good generation time for evolutionary experiments \
+Can tolerate and live in a broad range of salinities, freshwater to seawater \
+4 different treatments: Control, High T, High CO2, Both \
+Sampled at 1st and 25th generations of copepods \ 
+Bisulphide sequencing, parced genome to smaller regions - CpG sites, Rad-seq approach (cutting with restriction enzyme) \
+For control included unmethylated Ecoli DNA - so that conversion worked well
 
+Question:
+Consistent epigenetic changes in stressed environments but not in control?
+
+Fastqcs look weird - bunch of T, few C, as expected (unmethylated C's were converted to T), + other funkiness
+-> special method of alignment to reference needed
+we need 2 versions of reference: all C's converted to T; all G's converted to A (for other strand), we need to do 2 alignments
+
+Pipeline:
+1. Visualise, clean, visualise
+2. Align to Acartia tonsa reference genome (Bismark)
 
 ------    
 <div id='id-section54'/>   
