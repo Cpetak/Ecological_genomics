@@ -39,7 +39,7 @@ barplot(colSums(day10countstable), las=3, cex.names=0.5,names.arg = substring(co
 abline(h=mean(colSums(day10countstable)), col="blue", lwd =2)
 
 ## What is the average number of counts per gene?
-rowSums(day10countstable)
+summary(rowSums(day10countstable))
 mean(rowSums(day10countstable))
 median(rowSums(day10countstable)) # median is much lower -> not normally distributed gene experssion, some very low/high expression
 
@@ -49,7 +49,7 @@ summary(apply(day10countstable,2,mean))
 
 ## Create a DESeq object and define the experimental design here with the tilde
 
-dds <- DESeqDataSetFromMatrix(countData = countsTableRound, colData = conds, design = ~ climate + treatment + day)
+dds <- DESeqDataSetFromMatrix(countData = day10countstable, colData = conds10, design = ~ climate + treatment + climate:treatment)
 dim(dds)
 
 # Filter out genes with few reads, if we choose 76 as minimum that is on average 1 read per sample!
@@ -89,7 +89,7 @@ summary(res) #we get, "treatment H vs C"
 #LFC < 0 (down)     : 3, 0.013% -> 3 were higher in control, down regulated in hot
 
 #to pull out results from different contrasts
-res_clim <- results(dds, name ="climateHD.treatmentH", alpha = 0.05)
+res_clim <- results(dds, name ="treatment_D_vs_C", alpha = 0.05)
 res_clim <- res_clim[order(res_clim$padj),]
 
 summary(res_clim) #we get, "treatment_D_vs_C"
@@ -106,15 +106,14 @@ plotMA(res_clim, ylim=c(-3,3))
 # PCA
 vsd <- vst(dds, blind=FALSE)
 #you can play with "nsub" operation of this function
-data <- plotPCA(vsd, intgroup=c("climate", "treatment", "day"), returnData =TRUE) #can play with ntop, default 500 genes!
+data <- plotPCA(vsd, intgroup=c("climate", "treatment"), returnData =TRUE) #can play with ntop, default 500 genes!
 percentVar <- round(100*attr(data, "percentVar"))
 
 data$treatment <- factor(data$treatment, levels=c("C","H","D"), labels = c("C","H","D"))
 data$climate <- factor(data$climate, levels=c("CW","HD"), labels = c("CW","HD"))
-data$day <- factor(data$day, levels=c("0","5","10"), labels = c("0","5","10"))
 
 
-ggplot(data, aes(PC1, PC2, color=treatment, shape=day)) +
+ggplot(data, aes(PC1, PC2, color=climate, shape=treatment)) +
   geom_point(size=4, alpha=0.85) +
   xlab(paste0("PC1: ",percentVar[1],"% variance")) +
   ylab(paste0("PC2: ",percentVar[2],"% variance")) +
@@ -122,7 +121,7 @@ ggplot(data, aes(PC1, PC2, color=treatment, shape=day)) +
 
 # Counts of specific top gene! (important validatition that the normalization, model is working)
 #look at a few top genes, if they look similar to what you expect based on model significant result, result it is not driven by one spec gene
-d <-plotCounts(dds, gene="MA_10427910g0010", intgroup = (c("treatment","climate")), returnData=TRUE)
+d <-plotCounts(dds, gene="MA_10425837g0010", intgroup = (c("treatment","climate")), returnData=TRUE)
 d
 
 p <-ggplot(d, aes(x=treatment, y=count, color=climate)) + 
