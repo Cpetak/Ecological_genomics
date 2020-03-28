@@ -106,28 +106,33 @@ plotMA(res_clim, ylim=c(-3,3))
 # PCA
 vsd <- vst(dds, blind=FALSE)
 #you can play with "nsub" operation of this function
-data <- plotPCA(vsd, intgroup=c("climate", "treatment"), returnData =TRUE) #can play with ntop, default 500 genes!
+data <- plotPCA(vsd, intgroup=c("climate", "treatment","day"), returnData =TRUE) #can play with ntop, default 500 genes!
 percentVar <- round(100*attr(data, "percentVar"))
 
 data$treatment <- factor(data$treatment, levels=c("C","H","D"), labels = c("C","H","D"))
 data$climate <- factor(data$climate, levels=c("CW","HD"), labels = c("CW","HD"))
+data$day <- factor(data$day, levels=c("0","5","10"), labels = c("0","5","10"))
 
 
-ggplot(data, aes(PC1, PC2, color=climate, shape=treatment)) +
+ggplot(data, aes(PC1, PC2, color=day, shape=treatment)) +
   geom_point(size=4, alpha=0.85) +
   xlab(paste0("PC1: ",percentVar[1],"% variance")) +
   ylab(paste0("PC2: ",percentVar[2],"% variance")) +
-  theme_minimal()
+  theme_minimal() +
+  ggtitle("Principal Component Analysis showing only data from day 10") +
+  theme(plot.title = element_text(hjust = 0.5))
 
 # Counts of specific top gene! (important validatition that the normalization, model is working)
 #look at a few top genes, if they look similar to what you expect based on model significant result, result it is not driven by one spec gene
-d <-plotCounts(dds, gene="MA_10425837g0010", intgroup = (c("treatment","climate")), returnData=TRUE)
+d <-plotCounts(dds, gene="MA_10427910g0010", intgroup = (c("treatment","climate")), returnData=TRUE)
 d
 
 p <-ggplot(d, aes(x=treatment, y=count, color=climate)) + 
-  theme_minimal() + theme(text = element_text(size=20), panel.grid.major=element_line(colour="grey"))
+  theme_minimal() + theme(text = element_text(size=15),panel.grid.major=element_line(colour="grey"))
 p <- p + geom_point(position=position_jitter(w=0.3,h=0), size=3) +
-  scale_x_discrete(limits=c("C","H","D"))
+  scale_x_discrete(limits=c("C","H","D")) +
+  ggtitle("Expression of gene MA_10427910g0010") +
+  theme(plot.title = element_text(hjust = 0.5, size=15))
 p
 
 # Heatmap of top 20 genes sorted by pvalue
@@ -136,4 +141,4 @@ topgenes <- head(rownames(res_clim),20) #we ordered results by pvalue alread
 mat <- assay(vsd)[topgenes,]
 mat <- mat - rowMeans(mat)
 df <- as.data.frame(colData(dds)[,c("treatment","climate")])
-pheatmap(mat, annotation_col=df)
+pheatmap(mat, annotation_col=df, fontsize_col =7, fontsize_row = 7)
