@@ -1194,6 +1194,8 @@ Pipeline:
 1. Visualise, clean, visualise
 2. Align to Acartia tonsa reference genome (Bismark)
 
+My sample: AH_F25_2
+
 ------    
 <div id='id-section54'/>   
 
