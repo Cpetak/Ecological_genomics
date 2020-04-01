@@ -1233,8 +1233,33 @@ My sample: AH_F25_2
 
 
 ### Entry 58: 2020-04-01, Wednesday.   
+# Epigenomics Day 2 \
+Mapping rates were very different in different groups \
+Amount of DNA used highly influences this \
+-> you can go back and improve mapping rates with eg treating paired-end data as single-end \
 
+Get methylation extraction files \
+### Script
+``````
+bismark_methylation_extractor --bedGraph --scaffolds --gzip \
+    --cytosine_report --comprehensive \
+    --no_header \
+    --parallel 6 \
+    --output ~/tonsa_epigenetics/analysis/methylation_extract/ \
+    --genome_folder /data/copepods/tonsa_genome/ \
+    *pe.bam
+``````    
+Processing report in EG folder, html \
+M-Bias Plot: begining of read higher methylation rate, probs error -> we are trimming it off \
+What do coverage files look like? -> .bismark.cov.gz files \
+Column 1: Chromosome \
+Column 2: Start position \
+Column 3: End position, start and end are the same since it is a SNP \
+Column 4: Methylation percentage, from different cells \
+Column 5: Number of methylated C's \
+Column 6: Number of unmethylated C's \
 
+# Analyse with methylkit
 
 ------    
 <div id='id-section59'/>   
