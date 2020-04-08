@@ -76,6 +76,7 @@ meth <- methylKit:::readMethylBaseDB(
                 4,4,4,4),
   destrand = FALSE)
 
+
 # percMethylation() calculates the percent methylation for each site and sample
 pm <- percMethylation(meth)
 
@@ -102,8 +103,8 @@ clusterSamples(meth, dist="correlation", method = "ward.D", plot=TRUE)
 # subset with reorganize(), splitting data to a lot of pairwise alignments, no better way yet
 
 meth_sub <- reorganize(meth,
-                       sample.ids =c("AA_F00_1","AA_F00_2","AA_F00_3", "AA_F00_4",
-                                     "HH_F25_1","HH_F25_2","HH_F25_3","HH_F25_4"),
+                       sample.ids =c("AA_F25_1","AA_F25_2","AA_F25_3", "AA_F25_4",
+                                     "AH_F25_1","AH_F25_2","AH_F25_3","AH_F25_4"),
                        treatment = c(0,0,0,0,1,1,1,1),
                        save.db=FALSE)
 
@@ -116,6 +117,12 @@ myDiff <- getMethylDiff(myDiff, qvalue = 0.05, difference = 10) #need to be at l
 
 # we can visualize the changes in methylation frequencies quickly.
 hist(getData(myDiff)$meth.diff) #-> less methylation in HH, more in -ve change
+
+# get hyper methylated bases
+hyper=getMethylDiff(myDiff,difference=10,qvalue=0.05,type="hyper")
+#
+# get hypo methylated bases
+hypo=getMethylDiff(myDiff,difference=10,qvalue=0.05,type="hypo")
 
 # heatmap
 pm <- percMethylation(meth_sub)
@@ -137,3 +144,25 @@ ctrmean <- rowMeans(pm.sig[,1:4])
 h.norm<- (pm.sig-ctrmean)
 my_heatmap <- pheatmap(h.norm,show_rownames = FALSE)
 
+#####
+#let's look at methylation of specific gene or snp
+####
+
+df.out
+df.plot <- df.out[,c(1,5:12)] %>% pivot_longer(-snp, values_to = "methylation")
+df.plot$group <- substr(df.plot$name,1,2)
+head(df.plot)
+
+# looking at snp LS051659.1:1214
+# if you choose a different snp, you can create different plots.
+
+df.plot %>% filter(snp=="LS051659.1:1214") %>% 
+  ggplot(., aes(x=group, y=methylation, color=group, fill=group)) +
+  stat_summary(fun.data = "mean_se", size = 2) +
+  geom_jitter(width = 0.1, size=3, pch=21, color="black")
+
+## write bed file for intersection with genome annotation
+
+write.table(file = "~/Desktop/diffmeth_AA_AH.bed",
+            data.frame(chr= df.out$chr, start = df.out$start, end = df.out$end),
+            row.names=FALSE, col.names=FALSE, quote=FALSE, sep="\t")
