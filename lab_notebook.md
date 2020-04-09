@@ -1245,6 +1245,8 @@ bismark --bowtie2 --multicore 1 \
 
 ### Entry 58: 2020-04-01, Wednesday.   
 # Epigenomics Day 2 \
+https://pespenilab.github.io/Ecological-Genomics/2020-04-01_Epigenetics_Day_2%20(1).html 
+
 Mapping rates were very different in different groups \
 Amount of DNA used highly influences this \
 -> you can go back and improve mapping rates with eg treating paired-end data as single-end \
@@ -1270,7 +1272,7 @@ Column 4: Methylation percentage, from different cells \
 Column 5: Number of methylated C's \
 Column 6: Number of unmethylated C's \
 
-# Analyse with methylkit
+## Analyse with methylkit
 ## My R Script
 `````` 
 library(methylKit)
