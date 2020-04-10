@@ -104,7 +104,7 @@ clusterSamples(meth, dist="correlation", method = "ward.D", plot=TRUE)
 
 meth_sub <- reorganize(meth,
                        sample.ids =c("AA_F25_1","AA_F25_2","AA_F25_3", "AA_F25_4",
-                                     "AH_F25_1","AH_F25_2","AH_F25_3","AH_F25_4"),
+                                     "HA_F25_1","HA_F25_2","HA_F25_3","HA_F25_4"),
                        treatment = c(0,0,0,0,1,1,1,1),
                        save.db=FALSE)
 
@@ -114,9 +114,14 @@ myDiff <- calculateDiffMeth(meth_sub, overdispersion = "MN", mc.cores = 1, suffi
 
 # get all differentially methylated bases, the ones that are significant from above
 myDiff <- getMethylDiff(myDiff, qvalue = 0.05, difference = 10) #need to be at least 10 differences, kind of arbitrary
+#myDiff4 <- getMethylDiff(myDiff2, qvalue = 0.05, difference = 0) #need to be at least 10 differences, kind of arbitrary
 
 # we can visualize the changes in methylation frequencies quickly.
 hist(getData(myDiff)$meth.diff) #-> less methylation in HH, more in -ve change
+
+#hist(getData(myDiff3)$meth.diff, breaks = 10, col=rgb(1,0,0,0.5),xlim=c(-40,40), ylim=c(0,45), main="Frequency distribution of SNPs significantly differentially methylated in different treatment groups", xlab="% change in methylation rate")
+#hist(getData(myDiff4)$meth.diff, col=rgb(0,0,1,0.5), add=T)
+#legend("topright", c("Carbon dioxide response", "Heat response"), col=c("blue", "red"), lwd=10)
 
 # get hyper methylated bases
 hyper=getMethylDiff(myDiff,difference=10,qvalue=0.05,type="hyper")
@@ -156,13 +161,16 @@ head(df.plot)
 # looking at snp LS051659.1:1214
 # if you choose a different snp, you can create different plots.
 
-df.plot %>% filter(snp=="LS274951.1:141") %>% 
+df.plot %>% filter(snp=="LS328870.1:810") %>% 
   ggplot(., aes(x=group, y=methylation, color=group, fill=group)) +
   stat_summary(fun.data = "mean_se", size = 2) +
   geom_jitter(width = 0.1, size=3, pch=21, color="black")
 
 ## write bed file for intersection with genome annotation
 
-write.table(file = "~/Desktop/diffmeth_AA_AH.bed",
+write.table(file = "~/Desktop/diffmeth_AA_HA.bed",
             data.frame(chr= df.out$chr, start = df.out$start, end = df.out$end),
             row.names=FALSE, col.names=FALSE, quote=FALSE, sep="\t")
+
+# to get overlap between SNP datasets
+#j <- merge(x = HA_data, y = AH_data, by = c("chr", "start"))
